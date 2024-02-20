@@ -41,42 +41,71 @@ lagratekst = ""
 #    lagratekst = "tomt"
 
 
-def lagra():
-    global lagratekst
-    lagratekst = inputtxt.get("1.0", tk.END)
-    with open("savedtext.json", "w") as f:
-        json.dump(lagratekst, f)
+currentfile = ""
 
-def load():
+if currentfile != "":
+    print("there is something in the file")
+else:
+    print("there is nothin here")
+
+
+def lagra(currentfile):
     global lagratekst
-    with open("savedtext.json", "r") as f:
+    if currentfile != "":
+        lagratekst = inputtxt.get("1.0", tk.END)
+        with open(currentfile, "w") as f:
+            json.dump(lagratekst, f)
+
+def load(file_path):
+    global lagratekst
+    global currentfile
+    with open(file_path, "r") as f:
         lagratekst=json.load(f)
         inputtxt.delete("1.0", tk.END)
         inputtxt.insert(tk.END, lagratekst)
         print(lagratekst)
+        currentfile = file_path
+        print("the file is: ", file_path)
+
+def nyjson():
+    file_name = tk.simpledialog.askstring("Input", "File Name:")
+    if file_name:
+        with open(file_name+'.json', 'w') as f:
+            json.dump("", f)
+        print("sucses in making: ", file_name)
+        file_list()
+
 
 def file_list():
     Hkons_jsonfiles = [file for file in os.listdir() if file.endswith(".json")]
-    rowss= 0
-    for each jsonfil in Hkons_jsonfiles:
-        jsonbtns = tk.Button(side1, text=)
+    rowss= 10
+    for jsonfil in Hkons_jsonfiles:
+        jsonbtns = tk.Button(side1, text=jsonfil, command=lambda fp=jsonfil: load(fp), )
+        jsonbtns.grid(row=rowss, column=1, sticky='ew')
+        rowss += 1
+
+
+file_list()
+
+
+
+nyjsonbtn= tk.Button(side1, text="ny text", command=nyjson)
+nyjsonbtn.grid(row=7, column=1, sticky='ew')
 
 
 
 
-
-
-testlbl = tk.Label(side1, text=lagratekst)
+#testlbl = tk.Label(side1, text=lagratekst)
 tekstnr1lbl = tk.Label(side1, text="HALLOOO")
 tekstnr2lbl = tk.Label(side1, text="hei")
 knappnr1btn = tk.Button(side1, text="kje trykk", command=naikjetrykk)
 exitbtn = tk.Button(side1, text="exitt", command=exitknapp)
 popoppbtn = tk.Button(side1, text="trykk", command=popup1)
 
-lagrebtn = tk.Button(side1, text="save", command=lagra)
+lagrebtn = tk.Button(side1, text="save", command=lambda: lagra(currentfile))
 loadbtn = tk.Button(side1, text="load", command=load)
 
-entrytry = tk.Entry(side1)
+#entrytry = tk.Entry(side1)
 inputtxt = tk.Text(side1, height=1, width=1)
 
 
