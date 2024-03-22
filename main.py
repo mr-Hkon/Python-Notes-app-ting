@@ -2,6 +2,20 @@ import tkinter as tk
 from tkinter import filedialog
 import json
 import os
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
+cred = credentials.Certificate("C:/Users/HåkonEllingsen/Desktop/FIREBASEPY/tryy-f9c82-firebase-adminsdk-bs40e-1da15df9d4.json")
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://tryy-f9c82-default-rtdb.europe-west1.firebasedatabase.app'
+})
+
+
+
+plas = db.reference('/mby/savedtext')
+dataa =plas.get()
+print(dataa)
 
 side1 = tk.Tk()
 side1.title("en_side")
@@ -52,10 +66,15 @@ currentfile = ""
 
 def lagra(currentfile):
     global lagratekst
+    global savedfire
     if currentfile != "":
+        fixafil = currentfile.replace('.json','')
+        savedfire = db.reference(f'/lagrafiler/{fixafil}')
         lagratekst = inputtxt.get("1.0", tk.END)
         with open(currentfile, "w") as f:
             json.dump(lagratekst, f)
+        savedfire.set(lagratekst)
+        print(savedfire)
 
 def load(file_path):
     global lagratekst
@@ -130,4 +149,9 @@ inputtxt.config(bg="grey55")
 
 # exitbtn.place(x=1880, y=1050)
 # popoppbtn.pack()
+
+
+
+
+
 side1.mainloop()
