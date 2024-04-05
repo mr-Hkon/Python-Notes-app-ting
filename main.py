@@ -128,3 +128,6 @@ inputtxt.config(bg="grey55")
 
 
 side1.mainloop()
+
+#fix firebase file load
+#remove firebase cred thin in the start and use a file with gitignore
