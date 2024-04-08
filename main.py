@@ -28,6 +28,26 @@ sideicon = tk.PhotoImage(file="cat.png")
 side1.iconphoto(True, sideicon)
 
 
+savedplace = 'C:/Users/HåkonEllingsen/PycharmProjects/skoletkinter/notes'
+os.makedirs(savedplace, exist_ok=True)   # skjønne kje heilt denna linjå
+
+firebasesavedplace = db.reference('/lagrafiler')
+data = firebasesavedplace.get()
+fil_names = list(data.keys()) if data else []
+
+
+for file_name in fil_names:
+    file_ref = firebasesavedplace.child(file_name)
+    file_innehold = file_ref.get()
+    savedfile = os.path.join(savedplace, f'{file_name}.json')
+    with open(savedfile, 'w') as file:
+        json.dump(file_innehold, file)
+    print(f'saved {file_name}.json')
+
+
+print (data)
+
+
 
 def naikjetrykk():
     tekstnr1lbl.config(text="stoppp")
@@ -56,6 +76,10 @@ def lagra(currentfile):
         fixafil = currentfile.replace('.json','')
         savedfire = db.reference(f'/lagrafiler/{fixafil}')
         lagratekst = inputtxt.get("1.0", tk.END)
+        savedplace
+        savethis = fixafil + '.json'
+        file
+
         with open(currentfile, "w") as f:
             json.dump(lagratekst, f)
         savedfire.set(lagratekst)
@@ -76,14 +100,15 @@ def nyjson():
     global currentfile
     file_name = tk.simpledialog.askstring("Input", "File Name:")
     if file_name:
-        with open(file_name+'.json', 'w') as f:
+        filenew = os.path.join(savedplace, file_name + '.json')
+        with open(filenew, 'w') as f:
             json.dump("", f)
         print("sucses in making: ", file_name)
         file_list()
 
 
 def file_list():
-    Hkons_jsonfiles = [file for file in os.listdir() if file.endswith(".json")]
+    Hkons_jsonfiles = [file for file in os.listdir(savedplace) if file.endswith(".json")]
     rowss= 8
     for jsonfil in Hkons_jsonfiles:
         namejsonfil, ext = os.path.splitext(jsonfil)
