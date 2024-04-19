@@ -29,7 +29,7 @@ side1.iconphoto(True, sideicon)
 
 
 savedplace = 'C:/Users/HåkonEllingsen/PycharmProjects/skoletkinter/notes'
-os.makedirs(savedplace, exist_ok=True)   # skjønne kje heilt denna linjå
+#os.makedirs(savedplace, exist_ok=True)   # skjønne kje heilt denna linjå
 
 firebasesavedplace = db.reference('/lagrafiler')
 data = firebasesavedplace.get()
@@ -78,7 +78,7 @@ def lagra(currentfile):
         lagratekst = inputtxt.get("1.0", tk.END)
         savedplace
         savethis = fixafil + '.json'
-        file
+        #file
 
         with open(currentfile, "w") as f:
             json.dump(lagratekst, f)
@@ -88,13 +88,26 @@ def lagra(currentfile):
 def load(file_path):
     global lagratekst
     global currentfile
-    with open(file_path, "r") as f:
+    global savedplace
+    global filplacement
+    filplacement = os.path.join(savedplace, file_path)
+    if os.path.exists(filplacement):
+        print(f"finne folder{filplacement}")
+    else:
+        print("fant kje folder")
+    print(file_path)
+    with open(filplacement, "r") as f:
+        print ("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
         lagratekst=json.load(f)
         inputtxt.delete("1.0", tk.END)
         inputtxt.insert(tk.END, lagratekst)
         print(lagratekst)
-        currentfile = file_path
-        print("the file is: ", file_path)
+        currentfile = filplacement
+        print("the file is: ", filplacement)
+
+#def deletefile():
+
+
 
 def nyjson():
     global currentfile
@@ -108,6 +121,7 @@ def nyjson():
 
 
 def file_list():
+    global savedplace
     Hkons_jsonfiles = [file for file in os.listdir(savedplace) if file.endswith(".json")]
     rowss= 8
     for jsonfil in Hkons_jsonfiles:
@@ -116,6 +130,7 @@ def file_list():
         jsonbtns.grid(row=rowss, column=1, columnspan=20, sticky='ew')
         jsonbtns.config(bg="grey55", font=("TkDefaultFont", 10, "bold"))
         rowss += 1
+        print(f"rows:{rowss}")
 
 
 file_list()
