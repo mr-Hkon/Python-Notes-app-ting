@@ -26,11 +26,9 @@ firebase_admin.initialize_app(cred, {
 })
 
 
-
-
 plas = db.reference('/lagrafiler')
-#plas.set('')
-dataa =plas.get()
+# plas.set('')
+dataa = plas.get()
 print(dataa)
 
 side1 = tk.Tk()
@@ -44,7 +42,7 @@ side1.iconphoto(True, sideicon)
 
 
 savedplace = 'C:/Users/HåkonEllingsen/PycharmProjects/skoletkinter/notes'
-#os.makedirs(savedplace, exist_ok=True)   # skjønne kje heilt denna linjå
+# os.makedirs(savedplace, exist_ok=True)   # skjønne kje heilt denna linjå
 
 whoisloggedin = os.getlogin()
 print(f'logged in as {whoisloggedin}')
@@ -63,12 +61,13 @@ for file_name in fil_names:
     print(f'saved {file_name}.json')
 
 
-print (data)
-
+print(data)
 
 
 def naikjetrykk():
     tekstnr1lbl.config(text="stoppp")
+
+
 def exitknapp():
     side1.destroy()
 
@@ -79,19 +78,15 @@ for i in range(100):
 for j in range(200):
     side1.grid_columnconfigure(j, weight=1)
 
-#lagratekst = ""
+# lagratekst = ""
 currentfile = ""
-
-
-
-
 
 
 def lagra(currentfile):
     global lagratekst
     global savedfire
     if currentfile != "":
-        fixafil = os.path.basename(currentfile).replace('.json','')
+        fixafil = os.path.basename(currentfile).replace('.json', '')
         savedfire = db.reference(f'/Users/{whoisloggedin}/Saved/{fixafil}')
         print(f"the fixafil is: {fixafil}")
         lagratekst = inputtxt.get("1.0", tk.END)
@@ -106,6 +101,7 @@ def lagra(currentfile):
     else:
         print("currentfile is empty")
 
+
 def load(file_path):
     global lagratekst
     global currentfile
@@ -118,16 +114,15 @@ def load(file_path):
         print("fant kje folder")
     print(file_path)
     with open(filplacement, "r") as f:
-        print ("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-        lagratekst=json.load(f)
+        print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+        lagratekst = json.load(f)
         inputtxt.delete("1.0", tk.END)
         inputtxt.insert(tk.END, lagratekst)
         print(lagratekst)
         currentfile = filplacement
         print("the file is: ", filplacement)
 
-#def deletefile():
-
+# def deletefile():
 
 
 def nyjson():
@@ -144,10 +139,10 @@ def nyjson():
 def file_list():
     global savedplace
     Hkons_jsonfiles = [file for file in os.listdir(savedplace) if file.endswith(".json")]
-    rowss= 8
+    rowss = 8
     for jsonfil in Hkons_jsonfiles:
         namejsonfil, ext = os.path.splitext(jsonfil)
-        jsonbtns = tk.Button(side1, text=namejsonfil, command=lambda fp=jsonfil: load(fp), height=2 )
+        jsonbtns = tk.Button(side1, text= namejsonfil, command= lambda fp=jsonfil: load(fp), height= 2)
         jsonbtns.grid(row=rowss, column=1, columnspan=20, sticky='ew')
         jsonbtns.config(bg="grey55", font=("TkDefaultFont", 10, "bold"))
         rowss += 1
@@ -157,8 +152,7 @@ def file_list():
 file_list()
 
 
-
-nyjsonbtn= tk.Button(side1, text="ny text", command=nyjson, height=2,)
+nyjsonbtn = tk.Button(side1, text="ny text", command=nyjson, height=2,)
 nyjsonbtn.grid(row=82, column=1, rowspan=1, columnspan= 20, sticky='ew')
 
 
@@ -167,14 +161,14 @@ tekstnr2lbl = tk.Label(side1, text="hei")
 knappnr1btn = tk.Button(side1, text="kje trykk", command=naikjetrykk)
 
 exitbtn = tk.Button(side1, text="X", command=exitknapp)
-exitbtn.config(bg="grey55", font=(20), height= 1, width=2)
+exitbtn.config(bg="grey55", font=20, height= 1, width=2)
 lagrebtn = tk.Button(side1, text="Save", command=lambda: lagra(currentfile))
 loadbtn = tk.Button(side1, text="Load", command=load)
 
 
 inputtxt = tk.Text(side1, height=1, width=1, borderwidth=5,)
 
-########### PUT PÅ BORDER COLOR??????????????????????????????????????????????????????????????????????????
+# PUT PÅ BORDER COLOR??????????????????????????????????????????????????????????????????????????
 
 
 knappnr1btn.grid(row=50, column=150, columnspan=1)
@@ -182,13 +176,12 @@ exitbtn.grid(row=2, column=1, rowspan=5, columnspan=5, sticky="nsew", padx=0, pa
 
 
 lagrebtn.grid(row=84, column=22, padx=1, rowspan=3, columnspan=10, pady=1, sticky="nsew")
-#loadbtn.grid(row=10, column=16, padx=1, rowspan=2, columnspan=5, pady=1, sticky="nsew")
+# loadbtn.grid(row=10, column=16, padx=1, rowspan=2, columnspan=5, pady=1, sticky="nsew")
 inputtxt.grid(row=8, column=22, rowspan=75, columnspan=150, sticky="nsew")
 inputtxt.config(bg="grey55")
 
 
-
 side1.mainloop()
 
-#fix firebase file load
-#remove firebase cred thin in the start and use a file with gitignore
+# fix firebase file load
+# remove firebase cred thin in the start and use a file with gitignore
