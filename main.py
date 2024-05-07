@@ -46,7 +46,10 @@ side1.iconphoto(True, sideicon)
 savedplace = 'C:/Users/HåkonEllingsen/PycharmProjects/skoletkinter/notes'
 #os.makedirs(savedplace, exist_ok=True)   # skjønne kje heilt denna linjå
 
-firebasesavedplace = db.reference('/lagrafiler')
+whoisloggedin = os.getlogin()
+print(f'logged in as {whoisloggedin}')
+
+firebasesavedplace = db.reference(f'/Users/{whoisloggedin}/Saved/')
 data = firebasesavedplace.get()
 fil_names = list(data.keys()) if data else []
 
@@ -89,7 +92,7 @@ def lagra(currentfile):
     global savedfire
     if currentfile != "":
         fixafil = os.path.basename(currentfile).replace('.json','')
-        savedfire = db.reference(f'/lagrafiler/{fixafil}')
+        savedfire = db.reference(f'/Users/{whoisloggedin}/Saved/{fixafil}')
         print(f"the fixafil is: {fixafil}")
         lagratekst = inputtxt.get("1.0", tk.END)
         print(f"det som lagres e denna texten: {lagratekst}")
@@ -97,9 +100,6 @@ def lagra(currentfile):
             savedfire.set(lagratekst)
         except Exception as e:
             print(f"Error saving: {e}")
-        savedplace
-        savethis = fixafil + '.json'
-        #file
 
         with open(currentfile, "w") as f:
             json.dump(lagratekst, f)
